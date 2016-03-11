@@ -1,8 +1,3 @@
-
-import java.io.File;
-import java.util.Arrays;
-import mrdshinse.csv.reader.DefaultCsvReader;
-
 /*
  * The MIT License
  *
@@ -26,17 +21,32 @@ import mrdshinse.csv.reader.DefaultCsvReader;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package mrdshinse.csv.reader;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author mrdShinse
  */
-public class Main {
+public abstract class AbstractCsvReaderTest {
 
-    public static void main(String[] args) {
-        File csv = new File("/Users/shinse/programming/java/csv/src/main/resources/test.csv");
-        DefaultCsvReader dcr = new DefaultCsvReader(csv);
-        for (String[] line : dcr) {
-            System.out.println(Arrays.toString(line));
+    protected File createFile(String[] lines) {
+        File file = new File("test.csv");
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            for (String line : lines) {
+                bw.write(line);
+                bw.newLine();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(DefaultCsvReaderTest.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return file;
     }
+
 }
