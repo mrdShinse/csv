@@ -55,7 +55,7 @@ public class DefaultCsvReaderTest extends AbstractCsvReaderTest {
 
     @Test
     public void _２つ以上ダブルクォーテーションがある場合に両端のダブルクォーテーション間を文字列とする() {
-        File file = createFile(new String[]{"\", \"b\"　,\"\"c\", d"});
+        File file = createFile(new String[]{"\", \"b\"　,\\\"\"c\"x,d"});
         DefaultCsvReader dcr = new DefaultCsvReader(file);
         for (String[] line : dcr) {
             Assert.assertThat(line, CoreMatchers.is(new String[]{"\"", "b", "\"c", "d"}));
@@ -124,5 +124,14 @@ public class DefaultCsvReaderTest extends AbstractCsvReaderTest {
         for (String[] line : dcr) {
         }
         Assert.assertThat(out.toString(), CoreMatchers.is("The numbers of columns is not flushed"));
+    }
+
+    @Test
+    public void ダブルクォーテーションで囲まれた改行コードを無視する() {
+        File file = createFile(new String[]{"\"\ra\", \"b\r\n\"　,\"c\n\",\r\nd"});
+        DefaultCsvReader dcr = new DefaultCsvReader(file);
+        for (String[] line : dcr) {
+            Assert.assertThat(line, CoreMatchers.is(new String[]{"a", "b", "c"}));
+        }
     }
 }

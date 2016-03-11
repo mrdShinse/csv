@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 import mrdshinse.csv.configs.Config;
+import mrdshinse.csv.parser.CsvParser;
 
 /**
  *
@@ -39,7 +40,7 @@ import mrdshinse.csv.configs.Config;
  */
 public abstract class AbstractCsvReader implements Iterable<String[]>, Iterator<String[]> {
 
-    private final Config CONFIG;
+    private final CsvParser PARSER;
     private final File CSV_FILE;
     private final BufferedReader br;
     private String nextLine;
@@ -54,7 +55,7 @@ public abstract class AbstractCsvReader implements Iterable<String[]>, Iterator<
         if (!file.canRead()) {
             throw new RuntimeException("Unreadable file :" + file);
         }
-        this.CONFIG = config;
+        this.PARSER = new CsvParser(config);
         this.CSV_FILE = file;
         try {
             br = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(CSV_FILE))));
@@ -80,6 +81,6 @@ public abstract class AbstractCsvReader implements Iterable<String[]>, Iterator<
 
     @Override
     public String[] next() {
-        return nextLine.split(",");
+        return PARSER.parse(nextLine);
     }
 }
