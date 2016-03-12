@@ -50,7 +50,7 @@ public class PaformanceTest extends AbstractCsvReaderTest {
 
         //todo to change java8 date api
         Date start = new Date();
-        for (String[] line : dcr) {
+        for (String[] line : dcr.read()) {
         }
         Date end = new Date();
         Assert.assertThat(end.getTime() - start.getTime(), CoreMatchers.is(Matchers.lessThan(1000L)));

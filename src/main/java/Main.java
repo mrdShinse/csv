@@ -1,8 +1,10 @@
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import mrdshinse.csv.reader.DefaultCsvReader;
 
 /**
@@ -12,9 +14,11 @@ import mrdshinse.csv.reader.DefaultCsvReader;
 public class Main {
 
     public static void main(String[] args) {
-        File file = createFile(new String[]{"\", \"b\"　,\"\"c\", d"});
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+        File file = createFile(new String[]{"a,b,c,d,e", "a,b,c,z"});
         DefaultCsvReader dcr = new DefaultCsvReader(file);
-        for (String[] line : dcr) {
+        for (String[] line : dcr.read()) {
         }
     }
 

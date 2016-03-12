@@ -29,12 +29,14 @@ import mrdshinse.csv.configs.Config;
  *
  * @author mrdShinse
  */
-public class CsvParser {
+public class CsvLineParser {
 
     private final Config CONFIG;
+    private final int MAX_COLUMN_NUM;
 
-    public CsvParser(Config config) {
+    public CsvLineParser(Config config, int maxColumnNum) {
         this.CONFIG = config;
+        this.MAX_COLUMN_NUM = maxColumnNum;
     }
 
     public String[] parse(String line) {

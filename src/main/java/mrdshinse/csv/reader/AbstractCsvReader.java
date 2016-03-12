@@ -23,64 +23,23 @@
  */
 package mrdshinse.csv.reader;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Iterator;
 import mrdshinse.csv.configs.Config;
-import mrdshinse.csv.parser.CsvParser;
+import mrdshinse.csv.parser.CsvFileParser;
 
 /**
  *
  * @author mrdShinse
  */
-public abstract class AbstractCsvReader implements Iterable<String[]>, Iterator<String[]> {
+public abstract class AbstractCsvReader {
 
-    private final CsvParser PARSER;
-    private final File CSV_FILE;
-    private final BufferedReader br;
-    private String nextLine;
+    private final CsvFileParser CSV_FILE_PARSER;
 
     protected AbstractCsvReader(Config config, File file) {
-        if (!file.exists()) {
-            throw new RuntimeException("File doesn't exist :" + file);
-        }
-        if (file.isDirectory()) {
-            throw new RuntimeException("Cannot read directory :" + file);
-        }
-        if (!file.canRead()) {
-            throw new RuntimeException("Unreadable file :" + file);
-        }
-        this.PARSER = new CsvParser(config);
-        this.CSV_FILE = file;
-        try {
-            br = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(CSV_FILE))));
-        } catch (FileNotFoundException ex) {
-            throw new RuntimeException("File does not found :" + this);
-        }
+        CSV_FILE_PARSER = new CsvFileParser(config, file);
     }
 
-    @Override
-    public Iterator<String[]> iterator() {
-        return this;
-    }
-
-    @Override
-    public boolean hasNext() {
-        try {
-            nextLine = br.readLine();
-        } catch (IOException ex) {
-            throw new RuntimeException("Couldn't read line :" + CSV_FILE);
-        }
-        return nextLine != null;
-    }
-
-    @Override
-    public String[] next() {
-        return PARSER.parse(nextLine);
+    public CsvFileParser read() {
+        return CSV_FILE_PARSER;
     }
 }

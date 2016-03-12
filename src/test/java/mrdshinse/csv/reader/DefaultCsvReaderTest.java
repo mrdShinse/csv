@@ -45,7 +45,7 @@ public class DefaultCsvReaderTest extends AbstractCsvReaderTest {
         DefaultCsvReader dcr = new DefaultCsvReader(file);
 
         int lineCount = 1;
-        for (String[] line : dcr) {
+        for (String[] line : dcr.read()) {
             if (lineCount == 2) {
                 Assert.assertThat(line, CoreMatchers.is(new String[]{"d", "e", "f"}));
             }
@@ -57,7 +57,7 @@ public class DefaultCsvReaderTest extends AbstractCsvReaderTest {
     public void _２つ以上ダブルクォーテーションがある場合に両端のダブルクォーテーション間を文字列とする() {
         File file = createFile(new String[]{"\", \"b\"　,\\\"\"c\"x,d"});
         DefaultCsvReader dcr = new DefaultCsvReader(file);
-        for (String[] line : dcr) {
+        for (String[] line : dcr.read()) {
             Assert.assertThat(line, CoreMatchers.is(new String[]{"\"", "b", "\"c", "d"}));
         }
     }
@@ -66,7 +66,7 @@ public class DefaultCsvReaderTest extends AbstractCsvReaderTest {
     public void 文字列の前に半角スペースやタブがある場合に無視をする() {
         File file = createFile(new String[]{" \ta, b,\tc"});
         DefaultCsvReader dcr = new DefaultCsvReader(file);
-        for (String[] line : dcr) {
+        for (String[] line : dcr.read()) {
             Assert.assertThat(line, CoreMatchers.is(new String[]{"a", "b", "c"}));
         }
     }
@@ -75,7 +75,7 @@ public class DefaultCsvReaderTest extends AbstractCsvReaderTest {
     public void 文字列がない場合_行頭行末のカンマや二連続のカンマ_は空値として読み取る() {
         File file = createFile(new String[]{",\"\","});
         DefaultCsvReader dcr = new DefaultCsvReader(file);
-        for (String[] line : dcr) {
+        for (String[] line : dcr.read()) {
             Assert.assertThat(line, CoreMatchers.is(new String[]{"", "", ""}));
         }
     }
@@ -84,7 +84,7 @@ public class DefaultCsvReaderTest extends AbstractCsvReaderTest {
     public void 一行目よりもカラム数が多い行があった場合に多い方のカラム数に合わせて空値を追加する() {
         File file = createFile(new String[]{"a,b,c", "a,b,c,z"});
         DefaultCsvReader dcr = new DefaultCsvReader(file);
-        for (String[] line : dcr) {
+        for (String[] line : dcr.read()) {
             Assert.assertThat(line, CoreMatchers.is(new String[]{"a", "b", "c", ""}));
         }
     }
@@ -95,7 +95,7 @@ public class DefaultCsvReaderTest extends AbstractCsvReaderTest {
         System.setOut(new PrintStream(out));
         File file = createFile(new String[]{"a,b,c", "a,b,c,z"});
         DefaultCsvReader dcr = new DefaultCsvReader(file);
-        for (String[] line : dcr) {
+        for (String[] line : dcr.read()) {
         }
         Assert.assertThat(out.toString(), CoreMatchers.is("The numbers of columns is not flushed"));
     }
@@ -106,7 +106,7 @@ public class DefaultCsvReaderTest extends AbstractCsvReaderTest {
         DefaultCsvReader dcr = new DefaultCsvReader(file);
 
         int lineCount = 1;
-        for (String[] line : dcr) {
+        for (String[] line : dcr.read()) {
             if (lineCount == 2) {
                 Assert.assertThat(line, CoreMatchers.is(new String[]{"a", "b", ""}));
             }
@@ -121,7 +121,7 @@ public class DefaultCsvReaderTest extends AbstractCsvReaderTest {
 
         File file = createFile(new String[]{"a,b,c", "a,b"});
         DefaultCsvReader dcr = new DefaultCsvReader(file);
-        for (String[] line : dcr) {
+        for (String[] line : dcr.read()) {
         }
         Assert.assertThat(out.toString(), CoreMatchers.is("The numbers of columns is not flushed"));
     }
@@ -130,7 +130,7 @@ public class DefaultCsvReaderTest extends AbstractCsvReaderTest {
     public void ダブルクォーテーションで囲まれた改行コードを無視する() {
         File file = createFile(new String[]{"\"\ra\", \"b\r\n\"　,\"c\n\",\r\nd"});
         DefaultCsvReader dcr = new DefaultCsvReader(file);
-        for (String[] line : dcr) {
+        for (String[] line : dcr.read()) {
             Assert.assertThat(line, CoreMatchers.is(new String[]{"a", "b", "c"}));
         }
     }
