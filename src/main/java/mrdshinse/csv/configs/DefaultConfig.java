@@ -29,4 +29,8 @@ package mrdshinse.csv.configs;
  */
 public class DefaultConfig extends Config {
 
+    public DefaultConfig() {
+        super(true, true, true);
+    }
+
 }

@@ -27,43 +27,28 @@ package mrdshinse.csv.configs;
  *
  * @author mrdShinse
  */
-public abstract class Config {
+public class CustomConfig extends DefaultConfig {
 
-    protected boolean substringBetweenDubQuo;
-    protected boolean trimFirstBlank;
-    protected boolean trimLastBlank;
-
-    protected Config(boolean substringBetweenDubQuo, boolean trimFirstBlank, boolean trimLastBlank) {
-        this.substringBetweenDubQuo = substringBetweenDubQuo;
-        this.trimFirstBlank = trimFirstBlank;
-        this.trimLastBlank = trimLastBlank;
+    public CustomConfig() {
+        super();
     }
 
-    protected Config setTrimLastBlank(boolean trimLastBlank) {
-        this.trimLastBlank = trimLastBlank;
+    @Override
+    protected CustomConfig setSubstringBetweenDubQuo(boolean substringBetweenDubQuo) {
+        super.setSubstringBetweenDubQuo(substringBetweenDubQuo);
         return this;
     }
 
-    protected Config setTrimFirstBlank(boolean trimFirstBlank) {
-        this.trimFirstBlank = trimFirstBlank;
+    @Override
+    protected CustomConfig setTrimFirstBlank(boolean trimFirstBlank) {
+        super.setTrimFirstBlank(trimFirstBlank);
         return this;
     }
 
-    protected Config setSubstringBetweenDubQuo(boolean substringBetweenDubQuo) {
-        this.substringBetweenDubQuo = substringBetweenDubQuo;
+    @Override
+    protected CustomConfig setTrimLastBlank(boolean trimLastBlank) {
+        super.setTrimLastBlank(trimLastBlank);
         return this;
-    }
-
-    public boolean isSubstringBetweenDubQuo() {
-        return substringBetweenDubQuo;
-    }
-
-    public boolean isTrimLastBlank() {
-        return trimLastBlank;
-    }
-
-    public boolean isTrimFirstBlank() {
-        return trimFirstBlank;
     }
 
 }

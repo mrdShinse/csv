@@ -48,18 +48,30 @@ public class CsvParser {
             }
 
             //_２つ以上ダブルクォーテーションがある場合に両端のダブルクォーテーション間を文字列とする
-            int firstDubQuo = str.indexOf("\"");
-            int lastDubQuo = str.lastIndexOf("\"");
-            if (firstDubQuo != -1 && lastDubQuo != -1 && firstDubQuo != lastDubQuo) {
-                String tmp = str.substring(0, lastDubQuo);
-                tmp = tmp.substring(firstDubQuo + 1);
-                data[i] = tmp;
+            if (CONFIG.isSubstringBetweenDubQuo()) {
+                data[i] = substringBetweenDubQuo(str);
             }
 
-            //文字列の前に半角スペースやタブがある場合に無視をする
-            data[i] = data[i].trim();
+            //文字列の前後に半角スペースやタブがある場合に無視をする
+            if (CONFIG.isTrimFirstBlank() && CONFIG.isTrimLastBlank()) {
+                data[i] = trimBothStartEnd(data[i]);
+            }
         }
 
         return data;
+    }
+
+    private String substringBetweenDubQuo(String str) {
+        int firstDubQuo = str.indexOf("\"");
+        int lastDubQuo = str.lastIndexOf("\"");
+        if (firstDubQuo != -1 && lastDubQuo != -1 && firstDubQuo != lastDubQuo) {
+            str = str.substring(0, lastDubQuo);
+            str = str.substring(firstDubQuo + 1);
+        }
+        return str;
+    }
+
+    private String trimBothStartEnd(String str) {
+        return str.trim();
     }
 }
