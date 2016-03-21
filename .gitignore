@@ -1,3 +1,5 @@
 *.csv
 target
 nb-configuration.xml
+.idea
+csv.iml
